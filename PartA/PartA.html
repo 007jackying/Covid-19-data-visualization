@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="worldMap.js"></script>
+    <title>Covid-19 Cases</title>
+    <style>
+        div.tooltip {
+            color: white;
+            background: black;
+            border-radius: 3px;
+            box-shadow: 0px 0px 2px 0px #a6a6a6;
+            padding: .2em;
+            text-shadow: #f5f5f5 0 1px 0;
+            opacity: 0.9;
+            position: absolute;
+        }
+
+        /* REMOVE .incident FILL CSS */
+        .hover {
+            fill: yellow;
+        }
+
+        /* ADD CSS FOR #sliderContainer */
+        #sliderContainer {
+            text-align: left;
+            position: relative;
+
+        }
+        .container {
+            padding-left:500px ;
+        }
+        .withtext {
+            padding-right: 350px;
+        }
+
+        /* #chartContainer{
+            padding-left: 500px;
+        }
+        .mapContainer{
+            padding-left: 500px;
+        } */
+    </style>
+
+</head>
+
+<body onload="DrawWorldMap()">
+
+    <section id="title">
+        <h1 style="padding-left: 300px; font-family:Arial, Helvetica, sans-serif;">How successful has the U.S.A. been in responding to the COVID-19 pandemic compared to other countries?</h1>
+
+    </section>
+    <section id="map">
+        <div id="mapContainer" class="container">
+            <h2>World map</h2>
+    
+            <div id="sliderContainer">
+                <select class="monthSelection" name="months" id="monthId">
+                </select> 2020
+                <h4 id="covidInUSA"></h4>
+            </div>
+            <div id="board">
+                <svg class="world worldMap" id="worldMap" width="1000" height="700">
+                </svg>
+            </div>
+    
+        </div>
+    </section>
+    <section id="stackedbar">
+        
+    <div id="chartContainer" class="container">
+        <h2>Countries with the highest recorded cases and deaths with regards to the US</h2>
+        <div  class="chart1"></div>
+    </div>
+    </section>
+    <hr>
+    <section id="explanation">
+        <div id="explanationContainer" class="container withtext">
+            <h2>Explanation:</h2>
+            <p>This data visualization is aimed to show the audience how the US is doing with regards to COVID-19 cases by comparing them with other parts of the world.
+            </p>
+            <p>First, an interactive world map to show the amount of cases and deaths per country. Second, a stacked bar chart comparing the countries with the highest confirmed cases and deaths with the US. </p>
+            <ol>
+                <li>Interactive World Map:</li>
+                <p>
+                    The interactive world map includes the following attributes/dimensions:
+                        <ol>
+                            <li>Name of countries</li>
+                            <li>Total confirmed cases of the country</li>
+                            <li>Total deaths of the country</li>
+                            <li>Color gradient: The darker the color, the more the total cases </li>
+                        </ol>
+                </p>
+                <p>Besides that, the interactive world map also includes other features such as the ability to zoom and drag the map, as well as the hovering function that show name of the country, total cases, and deaths. The interactive map also has a dropdown selection to sort the cases by month. The color of the map will change according to the total case of that month user have chosen.</p>
+                <p>
+                    An example, we can see that the color changed rapidly from light to dark in the US since March 2020 while some countries changed slowly and some plateaued at a certain gradient.  
+                </p>
+                <li>Percentage stacked bar chart:  </li>
+                <p> The percentage stacked bar chart shows the ratio between the total confirmed cases, deaths  of each country with regards to the US.</p>
+                <p>
+                    The bar chart includes the following attributes/dimensions:
+                        <ol>
+                            <li>Name of countries (X-axis)</li>
+                            <li>percentage (Y-axis)</li>
+                            <li>Total confirmed cases of the country (Yellow)</li>
+                            <li>Total deaths of the country (Greyish blue)</li>
+                        </ol>
+                </p>
+                <p>The purpose of the stacked bar chart is to allow the users to visualize the data in a different perspective. </p>
+                <p>As example, by comparing the ratio of each country, users will notice that US (3%) has lower percentage of death rate over total cases while comparing to Mexico(8%). </p>
+            </ol>
+            <h3>Conclusion: </h3>
+            <p>Using a same dataset but different visual designs can affect the result. On the world map, we can see the US is not doing well. But, when we look into the small details in the percentage bar chart we can see the US has very high total confirmed cases but they have one of the lowest death percentage among other countries on the chart.</p>
+            
+        </div>
+
+    </section>
+    <hr>
+
+    <section id="attribution">
+        <div id="attributionContainer" class="container withtext table">
+           <h2>Attribution:</h2>
+                <ol>
+                    <li>
+                        datasets that are used to create the world map and the bar chart:
+                        <ul>
+                            <li>
+                                <a href="jsonfiles/geo.json"> geo.json</a> is used to create paths of the countries in the svg are taken from the geojson website: <a href="https://geojson.org/">GEOJSON</a>
+                            </li>
+                            <li>
+                                <a href="jsonfiles/countries.json">countries.json</a> has the longitude and latitude of the each country's capital that is used for mouse hovering function and it is retrived from: <a href="https://gist.github.com/keeguon/2310008">https://gist.github.com/keeguon/2310008</a> by KeeGuon 
+                            </li>
+                            <li>
+                                <a href="jsonfiles/OWID_DATA.csv"> OWID.csv</a> is the dataset provided by <a href="http://www.cs.mun.ca/~brown/">Dr Edward Brown</a> and it is retrived from: <a href="https://covid.ourworldindata.org/data/owid-covid-data.json">OWID</a> and made by: <a href="https://ourworldindata.org/">OWID</a>
+                            </li>
+                            <li>
+                                <a href="jsonfiles/result.csv">result.csv</a> is used to create the stacked bar chart function and the data of result.csv is part of <a href="https://covid.ourworldindata.org/data/owid-covid-data.json">OWID_DATA</a>.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Code adapted and inspirations:
+                        <ul>
+                            <li>An interactive world map:
+                                <ul>
+                                    <li>The color gradient of the map is inspired by: <a href="https://bing.com/covid/local/canada"> Covid 19</a>  website by <a href="www.bing.com">BING</a></li>
+                                    <li>The choropeth map is with color is adapted from : <a href="https://bl.ocks.org/ChumaA/385a269db46ae56444772b62f1ae82bf">bl.ock.org</a> by <a href="https://bl.ocks.org/ChumaA">Chuma Agogbua</a></li>
+                                    <li>The color code are used from: <a href="https://coolors.co/gradient-palette/fbdcdc-d91818?number=6">Coolors</a> </li>
+                                </ul>
+                            </li>
+                            <li>A percentage stacked bar chart:
+                                <ul>
+                                    <li>The bar chart is inspired by: <a href="https://www.worldometers.info/coronavirus/worldwide-graphs/"> Worldometer</a></li>
+                                    <li>The code is adapted from: <a href="https://www.d3-graph-gallery.com/graph/barplot_stacked_basicWide.html"> D3 graph gallery</a> and <a href="https://observablehq.com/@d3/stacked-bar-chart">observablehq</a></li>
+                                </ul>
+                            </li>
+                            <li>Legends of both charts:
+                                <ul>
+                                    <li>code is adapted from : <a href="https://www.d3-graph-gallery.com/graph/custom_legend.html">D3.js Graph Gallery</a></li>
+                                </ul>
+
+                            </li>
+
+                        </ul>
+                    </li>
+                </ol>
+
+        </div>
+
+    </section>
+    <section class="container">
+        <h1>Author: Teng Hong Lee, 201723459</h1>
+    </section>
+    
+
+</body>
+
+</html>
